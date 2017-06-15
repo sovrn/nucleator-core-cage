@@ -37,11 +37,23 @@ nat_security_group_ingress:
       ToPort: "80"
       CidrIp: '{{ network_topology["private_cidr"] }}'
 
+    # outbound HTTP via NAT requires inbound HTTP to NAT from database subnet instances
+    - IpProtocol: "tcp"
+      FromPort: "80"
+      ToPort: "80"
+      CidrIp: '{{ network_topology["db_cidr"] }}'
+
     # outbound HTTPS via NAT requires inbound HTTPS to NAT from private subnet instances
     - IpProtocol: "tcp"
       FromPort: "443"
       ToPort: "443"
       CidrIp: '{{ network_topology["private_cidr"] }}'
+
+    # outbound HTTPS via NAT requires inbound HTTPS to NAT from database subnet instances
+    - IpProtocol: "tcp"
+      FromPort: "443"
+      ToPort: "443"
+      CidrIp: '{{ network_topology["db_cidr"] }}'
 
     # outbound DNS resolution via NAT requires
     # inbound DNS requests to NAT from private subnet instances
@@ -69,6 +81,12 @@ nat_security_group_ingress:
       FromPort: "8081"
       ToPort: "8081"
       CidrIp: '{{ network_topology["private_cidr"] }}'
+
+    # TODO: Find out what/who uses this port
+    - IpProtocol: "tcp"
+      FromPort: "7000"
+      ToPort: "7000"
+      CidrIp: '{{ network_topology["vpc_cidr"] }}'
 
 nat_security_group_egress:
 
@@ -98,6 +116,12 @@ nat_security_group_egress:
       ToPort: "53"
       CidrIp: '{{ network_topology["awsdns_cidr"] }}'
 
+    # TODO: outbound DNS, only to ???
+    - IpProtocol: "tcp"
+      FromPort: "53"
+      ToPort: "53"
+      CidrIp: "10.106.113.0/24"
+
     # outbound native git protocol to internet hosts
     - IpProtocol: "tcp"
       FromPort: "9418"
@@ -114,4 +138,10 @@ nat_security_group_egress:
     - IpProtocol: "tcp"
       FromPort: "8081"
       ToPort: "8081"
+      CidrIp: "0.0.0.0/0"
+
+    # TODO: Find out what/who uses this port
+    - IpProtocol: "tcp"
+      FromPort: "7000"
+      ToPort: "7000"
       CidrIp: "0.0.0.0/0"
