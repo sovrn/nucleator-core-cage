@@ -41,7 +41,7 @@
 	    "Type": "String",
 	    "Default": "False",
 	    "Description": "Set to 'True' to create Elb Logging S3 Bucket & Policy."
-	}	
+	}
     },
     "Conditions": {
 	"CreateBucketCondition": {"Fn::Equals": [{"Ref": "CreateBucket"}, "True"]}
@@ -672,6 +672,50 @@
                     "SourceDestCheck": "false",
                     "SubnetId": {
                         "Ref": "PublicSubnet1"
+                    },
+                    "SecurityGroupId": {
+                        "Ref": "NatSecurityGroup"
+                    }
+                }
+            }
+        },
+        "Nat2Instance": {
+            "Type": "AWS::CloudFormation::Stack",
+            "DependsOn": "NatSecurityGroup",
+            "Properties": {
+                "TemplateURL": "{{template_s3_accessor_url}}/instance.json",
+                "Parameters": {
+                    "InstanceName": "nat2.{{cage_name}}.{{customer_domain}}",
+                    "NucleatorGroup": "nat",
+                    "InstanceType": {
+                        "Ref": "NatInstanceType"
+                    },
+                    "KeypairName": {
+                        "Ref": "KeypairName"
+                    },
+                    "ImageId": {
+                        "Fn::FindInMap": [
+                            "AWSRegionArch2NatAMI",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            {
+                                "Fn::FindInMap": [
+                                    "AWSInstanceType2Arch",
+                                    {
+                                        "Ref": "NatInstanceType"
+                                    },
+                                    "Arch"
+                                ]
+                            }
+                        ]
+                    },
+                    "ServiceRole": {
+                        "Ref": "ServiceRole"
+                    },
+                    "SourceDestCheck": "false",
+                    "SubnetId": {
+                        "Ref": "PublicSubnet2"
                     },
                     "SecurityGroupId": {
                         "Ref": "NatSecurityGroup"
