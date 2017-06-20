@@ -18,6 +18,26 @@ bastion_cidr_whitelist_ingress_rules:
     FromPort: 22
     ToPort: 22
 
+# BEGIN SOVRN INGRESS CUSTOMIZATIONS
+  - IpProtocol: tcp
+    FromPort: 7000
+    ToPort: 7000
+
+  - IpProtocol: tcp
+    FromPort: 7000
+    ToPort: 7000
+    CidrIp: "13.58.26.23/32"
+
+  - IpProtocol: tcp
+    FromPort: 7000
+    ToPort: 7000
+    CidrIp: "52.15.142.135/32"
+
+  - IpProtocol: tcp
+    FromPort: 1024
+    ToPort: 65535
+    CidrIp: "{{ network_topology['vpc_cidr'] }}"
+
 bastion_egress_rules:
   # ssh
   - IpProtocol: tcp
@@ -44,3 +64,25 @@ bastion_egress_rules:
     FromPort: 9418
     ToPort: 9418
     CidrIp: "0.0.0.0/0"
+
+#BEGIN SOVRN EGRESS CUSTOMIZATIONS
+  # dns to ?
+  - IpProtocol: udp
+    FromPort: 53
+    ToPort: 53
+    CidrIp: "10.106.113.0/24"
+  # dns to ?
+  - IpProtocol: tcp
+    FromPort: 53
+    ToPort: 53
+    CidrIp: "10.106.113.0/24"
+  # MySQL/Aurora
+  - IpProtocol: tcp
+    FromPort: 3306
+    ToPort: 3306
+    CidrIp: "0.0.0.0/0"
+  # No Idea... ?
+  - IpProtocol: tcp
+    FromPort: 8088
+    ToPort: 8088
+    CidrIp: "::/0"

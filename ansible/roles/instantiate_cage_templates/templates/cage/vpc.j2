@@ -1126,6 +1126,93 @@
             }
         }
     },
+    "BindDnsRecord": {
+        "Type": "AWS::Route53::RecordSet",
+        "Properties": {
+            "HostedZoneName": "{{ cage_name }}.{{customer_domain}}.",
+            "Comment": "A record for the bind server.",
+            "Name": "bind.{{cage_name}}.{{customer_domain}}",
+            "Type": "CNAME",
+            "TTL": "300",
+            "ResourceRecords": [
+                {
+                   "Fn::GetAtt" : [ "BindInstance", "PrivateIp" ]
+                }
+            ]
+        }
+    },
+    "BindSecurityGroup": {
+        "Type": "AWS::EC2::SecurityGroup",
+        "Properties": {
+            "GroupDescription": "Enable internal access to the Bind device",
+            "VpcId": {
+                "Ref": "VPC"
+            },
+    {{ bind_security_group_ingress | to_json_fragment }},
+    {{ bind_security_group_egress | to_json_fragment }},
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": {
+                        "Fn::Join": [
+                            ".",
+                            [
+                "security",
+                "bind",
+                "{{cage_name}}",
+                "{{customer_name}}",
+                                "unresolvable"
+                            ]
+                        ]
+                    }
+                },
+        { "Key": "NucleatorGroup", "Value": "networking" },
+        {{ nucleator_common_tags | to_json_fragment }}
+            ]
+        }
+    },
+    "BindInstance": {
+        "Type": "AWS::CloudFormation::Stack",
+        "Properties": {
+            "TemplateURL": "{{template_s3_accessor_url}}/instance.json",
+            "Parameters": {
+                "InstanceName": "bind.{{cage_name}}.{{customer_domain}}",
+                "NucleatorGroup": "bind",
+                "InstanceType": {
+                    "Ref": "BastionInstanceType"
+                },
+                "KeypairName": {
+                    "Ref": "KeypairName"
+                },
+                "ImageId": {
+                    "Fn::FindInMap": [
+                        "AWSRegionArch2BastionAMI",
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        {
+                            "Fn::FindInMap": [
+                                "AWSInstanceType2Arch",
+                                {
+                                    "Ref": "BastionInstanceType"
+                                },
+                                "Arch"
+                            ]
+                        }
+                    ]
+                },
+                "ServiceRole": {
+                    "Ref": "ServiceRole"
+                },
+                "SubnetId": {
+                    "Ref": "PrivateSubnet2"
+                },
+                "SecurityGroupId": {
+                    "Ref": "BindSecurityGroup"
+                }
+            }
+        }
+    },
     "Outputs": {
         "VpcId": {
             "Description": "ID of the VPC created for this cage",
@@ -1143,6 +1230,12 @@
             "Description": "ID of the Bastion Security Group.  Use this as a source security group to enable ssh from bastion to instances and beanstalks in the private subnet.",
             "Value": {
                 "Ref": "BastionSecurityGroup"
+            }
+        },
+        "BindSecurityGroupId": {
+            "Description": "ID of the Bind  Security Group.  Use this to add ingress rules for instances and beanstalks in the private subnet.",
+            "Value": {
+                "Ref": "BindSecurityGroup"
             }
         },
         "PublicNetworkAclId": {
