@@ -17,3 +17,4 @@ create_bucket: False
 
 nucleator_cage_bastion_instance_type: t2.micro
 nucleator_cage_nat_instance_type: t2.micro
+nucleator_cage_bind_instance_type: t2.micro

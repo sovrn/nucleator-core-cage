@@ -118,11 +118,35 @@ public_acl:
         PortRange:
           From: 53
           To: 53
-    - name: InboundDnsEphemeralPublicNetworkAclEntry
+    - name: SovrnInboundDnsTcpPublicNetworkAclEntry
+      properties:
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "10.106.113.0/24"
+        PortRange:
+          From: 53
+          To: 53
+    - name: SovrnInboundDnsUdpPublicNetworkAclEntry
       properties:
         Protocol: 17 #udp
         RuleAction: allow
-        CidrBlock: '{{ network_topology.vpc_cidr }}'
+        CidrBlock: "10.106.113.0/24"
+        PortRange:
+          From: 53
+          To: 53
+    - name: SovrnInboundDnsUdpEphemeralPublicNetworkAclEntry
+      properties:
+        Protocol: 17 #udp
+        RuleAction: allow
+        CidrBlock: "10.106.113.0/24"
+        PortRange:
+          From: 1024
+          To: 65535
+    - name: SovrnInboundDnsTcpEphemeralPublicNetworkAclEntry
+      properties:
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "10.106.113.0/24"
         PortRange:
           From: 1024
           To: 65535

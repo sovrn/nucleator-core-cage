@@ -1126,6 +1126,30 @@
             }
         }
     },
+    "BindVPCDHCPOptionsAssociation" : {
+        "Type" : "AWS::EC2::VPCDHCPOptionsAssociation",
+        "Properties" : {
+        "VpcId" : {"Ref" : "VPC"},
+        "DhcpOptionsId" : {"Ref" : "BindDhcpOptions"}
+        }
+    },
+    "BindDhcpOptions" : {
+        "Type" : "AWS::EC2::DHCPOptions",
+        "Properties" : {
+            "DomainName" :  {
+                "Fn::Join": [
+                    "",
+                    [
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        ".compute.internal"
+                    ]
+                ]
+            },
+            "DomainNameServers" : [ { "Fn::GetAtt" : [ "BindInstance", "PrivateIp" } ]
+        }
+    },
     "BindDnsRecord": {
         "Type": "AWS::Route53::RecordSet",
         "Properties": {
