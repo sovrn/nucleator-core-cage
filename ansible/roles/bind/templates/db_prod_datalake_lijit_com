@@ -1,0 +1,33 @@
+;
+;
+
+; Use semicolons to add comments.
+; Host-to-IP Address DNS Pointers for prod.datalake.lijit.com
+; Note: The extra . at the end of the domain names are important.
+
+; The following parameters set when DNS records will expire, etc.
+; Importantly, the serial number must always be iterated upward to prevent
+; undesirable consequences. A good format to use is YYYYMMDDII where
+; the II index is in case you make more that one change in the same day.
+
+; {{ cage_name }}.datalake.{{sovrn_dns_domain}}
+
+$ORIGIN .
+$TTL 3600      ; 1 hour
+
+{{ cage_name }}.datalake.{{sovrn_dns_domain}}. IN     SOA ns-1536.awsdns-00.co.uk. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400
+      IN  NS    ns-0.awsdns-00.com. ;
+      IN NS ns-1536.awsdns-00.co.uk. ;
+      IN NS ns-1024.awsdns-00.org. ;
+      IN NS ns-512.awsdns-00.net. ;
+$ORIGIN {{ cage_name }}.datalake.{{sovrn_dns_domain}}.
+
+; Set the address for localhost.{{ cage_name }}.datalake.{{sovrn_dns_domain}}
+localhost    IN A 127.0.0.1
+
+; Set the hostnames in alphabetical order
+
+addb1   IN  CNAME  addb1.cmduxlawcb3u.us-east-2.rds.amazonaws.com.
+daas   IN  CNAME  daas.cmduxlawcb3u.us-east-2.rds.amazonaws.com.
+mdb2   IN  CNAME  dbm1.cmduxlawcb3u.us-east-2.rds.amazonaws.com.
+yellowfin               IN  A     172.26.11.191
