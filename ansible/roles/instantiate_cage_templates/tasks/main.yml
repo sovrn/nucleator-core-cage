@@ -21,6 +21,7 @@
     - private_acl.yml
     - database_acl.yml
     - bastion_sg_rules.yml
+    - bind_sg_rules.yml
 
 - name: log stackset_name
   debug: msg="{{stackset_name}}"
