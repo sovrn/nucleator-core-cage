@@ -12,11 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ---
+- name: Display the facts for our bind host
+  debug:
+    var: hostvars[inventory_hostname]
+  when: display_facts and hostvars is defined and hostvars[inventory_hostname] is defined
 
-- name: install bind pacakages
-  yum: name={{item}} state=installed
-  sudo: true
-  with_items:
-    - nc
+# - name: install bind packages
+#   yum: name={{item}} state=installed
+#   sudo: true
+#   with_items:
+#     - nc
 
 # Need to somehow figure out how to get the Route53 info needed in the db_prod_datalake_lijit_com template...

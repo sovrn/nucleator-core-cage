@@ -27,7 +27,7 @@
   vars:
     cage_name: "{{cage_name}}"
     customer_name: "{{customer_name}}"
-    bastion_hostname: 
+    bastion_hostname:
   tasks:
     - name: ensure that global dns can resolve cage
       command: "dig +noadflag +short SOA {{cage_name}}.{{customer_domain}}"
@@ -97,3 +97,8 @@
   roles:
     - bastion
     - maintain-users
+
+- hosts: MATCH_NUCLEATORGROUP__bind
+  sudo: yes
+  roles:
+    - bind

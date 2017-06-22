@@ -38,7 +38,7 @@
     wait: yes
   delegate_to: localhost
   when: restart_demanded | bool
-      
+
 #TODO add customer name to ssh-config path
 - name: wait for instance to be ready
   shell: ssh -F {{nucleator_configuration_dir}}/ssh-config/{{customer_name}}/{{cage_name}} {{ inventory_hostname }} "echo ready"
