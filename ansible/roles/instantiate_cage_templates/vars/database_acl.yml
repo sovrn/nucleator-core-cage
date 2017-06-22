@@ -60,7 +60,43 @@ database_acl:
         PortRange:
           From: 5439
           To: 5439
-
+# BEGIN sovrn customizations
+    - name: SovrnInboundMysqlNetworkAclEntry_1
+      properties:
+        RuleNumber: 201
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "50.38.88.16/32"
+        PortRange:
+          From: 3306
+          To: 3306
+    - name: SovrnInboundMysqlNetworkAclEntry_2
+      properties:
+        RuleNumber: 202
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "10.177.4.0/24"
+        PortRange:
+          From: 3306
+          To: 3306
+    - name: SovrnInboundMysqlNetworkAclEntry_3
+      properties:
+        RuleNumber: 203
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "10.177.5.0/24"
+        PortRange:
+          From: 3306
+          To: 3306
+    - name: SovrnInboundUdpEphemeralNetworkAclEntry
+      properties:
+        RuleNumber: 204
+        Protocol: 17 #udp
+        RuleAction: allow
+        CidrBlock: "0.0.0.0/0"
+        PortRange:
+          From: 1024
+          To: 65535
 
   outbound_entries:
     - name: OutboundDbNetworkAclEntry

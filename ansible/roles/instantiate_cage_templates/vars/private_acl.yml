@@ -60,7 +60,7 @@ private_acl:
         PortRange:
           From: 1024
           To: 65535
-    - name: InboundDnsUdpPrivateNetworkAclEntry
+    - name: InboundDnsPrivateNetworkAclEntry
       properties:
         RuleNumber: 105
         Protocol: 17 #udp
@@ -69,23 +69,151 @@ private_acl:
         PortRange:
           From: 53
           To: 53
-    - name: InboundDnsTcpPrivateNetworkAclEntry
+    - name: InboundDnsEphemeralPrivateNetworkAclEntry
       properties:
         RuleNumber: 106
+        Protocol: 17 #udp
+        RuleAction: allow
+        CidrBlock: '{{ network_topology.vpc_cidr }}'
+        PortRange:
+          From: 1024
+          To: 65535
+# BEGIN sovrn customizations
+    - name: SovrnInboundDnsPrivateNetworkAclEntry
+      properties:
+        RuleNumber: 201
         Protocol: 6 #tcp
         RuleAction: allow
         CidrBlock: '{{ network_topology.vpc_cidr }}'
         PortRange:
           From: 53
           To: 53
-    - name: InboundDnsEphemeralPrivateNetworkAclEntry
+    - name: SovrnInboundHttpPrivateNetworkAclEntry_1
       properties:
-        RuleNumber: 107
+        RuleNumber: 202
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "10.101.0.0/16"
+        PortRange:
+          From: 80
+          To: 80
+    - name: SovrnInboundHttpPrivateNetworkAclEntry_2
+      properties:
+        RuleNumber: 203
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "10.103.0.0/16"
+        PortRange:
+          From: 80
+          To: 80
+    - name: SovrnInboundHttpPrivateNetworkAclEntry_3
+      properties:
+        RuleNumber: 204
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "172.27.224.0/20"
+        PortRange:
+          From: 80
+          To: 80
+    - name: SovrnInboundHttpsPrivateNetworkAclEntry_1
+      properties:
+        RuleNumber: 205
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "10.101.0.0/16"
+        PortRange:
+          From: 443
+          To: 443
+    - name: SovrnInboundHttpsPrivateNetworkAclEntry_2
+      properties:
+        RuleNumber: 206
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "10.103.0.0/16"
+        PortRange:
+          From: 443
+          To: 443
+    - name: SovrnOutboundPrivateNetworkAclEntry_3
+      properties:
+        RuleNumber: 207
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "13.58.25.66/32"
+        PortRange:
+          From: 1
+          To: 65535
+    - name: SovrnOutboundPrivateNetworkAclEntry_4
+      properties:
+        RuleNumber: 208
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "172.26.0.204/32"
+        PortRange:
+          From: 1
+          To: 65535
+    - name: SovrnOutboundPrivateNetworkAclEntry_5
+      properties:
+        RuleNumber: 209
         Protocol: 17 #udp
         RuleAction: allow
-        CidrBlock: '{{ network_topology.vpc_cidr }}'
+        CidrBlock: "10.106.0.0/16"
         PortRange:
-          From: 1024
+          From: 0
+          To: 65535
+    - name: SovrnOutboundPrivateNetworkAclEntry_6
+      properties:
+        RuleNumber: 210
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "10.106.0.0/16"
+        PortRange:
+          From: 0
+          To: 65535
+    - name: SovrnOutboundPrivateNetworkAclEntry_7
+      properties:
+        RuleNumber: 211
+        Protocol: 17 #udp
+        RuleAction: allow
+        CidrBlock: "172.27.0.0/16"
+        PortRange:
+          From: 0
+          To: 65535
+    - name: SovrnOutboundPrivateNetworkAclEntry_8
+      properties:
+        RuleNumber: 212
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "172.27.0.0/16"
+        PortRange:
+          From: 0
+          To: 65535
+    - name: SovrnOutboundPrivateNetworkAclEntry_9
+      properties:
+        RuleNumber: 213
+        Protocol: 17 #udp
+        RuleAction: allow
+        CidrBlock: "172.24.0.0/16"
+        PortRange:
+          From: 0
+          To: 65535
+    - name: SovrnOutboundPrivateNetworkAclEntry_10
+      properties:
+        RuleNumber: 214
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "172.24.0.0/16"
+        PortRange:
+          From: 0
+          To: 65535
+# TODO: The blanket rule that needs to be eliminated!!!
+    - name: SovrnOutboundPrivateNetworkAclEntry_11
+      properties:
+        RuleNumber: 215
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "0.0.0.0/0"
+        PortRange:
+          From: 0
           To: 65535
 
   outbound_entries:
