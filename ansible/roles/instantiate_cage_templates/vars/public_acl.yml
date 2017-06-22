@@ -118,6 +118,7 @@ public_acl:
         PortRange:
           From: 53
           To: 53
+# BEGIN sovrn customizations
     - name: SovrnInboundDnsTcpPublicNetworkAclEntry
       properties:
         Protocol: 6 #tcp
@@ -150,6 +151,38 @@ public_acl:
         PortRange:
           From: 1024
           To: 65535
+    - name: SovrnInboundHttpPublicNetworkAclEntry_1
+      properties:
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "50.109.225.254/32"
+        PortRange:
+          From: 80
+          To: 80
+    - name: SovrnInboundHttpPublicNetworkAclEntry_2
+      properties:
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "52.15.142.135/32"
+        PortRange:
+          From: 80
+          To: 80
+    - name: SovrnInboundMysqlPublicNetworkAclEntry
+      properties:
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: "0.0.0.0/0"
+        PortRange:
+          From: 3306
+          To: 3306
+    - name: SovrnInboundPublicNetworkAclEntry
+      properties:
+        Protocol: 6 #tcp
+        RuleAction: allow
+        CidrBlock: '{{ network_topology.vpc_cidr }}'
+        PortRange:
+          From: 7000
+          To: 7000
 
   outbound_entries:
     - name: OutboundPublicNetworkAclEntry
