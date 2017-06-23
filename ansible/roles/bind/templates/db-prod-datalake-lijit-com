@@ -10,19 +10,19 @@
 ; undesirable consequences. A good format to use is YYYYMMDDII where
 ; the II index is in case you make more that one change in the same day.
 
-; {{ cage_name }}.datalake.{{sovrn_dns_domain}}
+; {{ cage_name }}.datalake.{{sovrn_domain}}
 
 $ORIGIN .
 $TTL 3600      ; 1 hour
 
-{{ cage_name }}.datalake.{{sovrn_dns_domain}}. IN     SOA ns-1536.awsdns-00.co.uk. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400
+{{ cage_name }}.datalake.{{sovrn_domain}}. IN     SOA ns-1536.awsdns-00.co.uk. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400
       IN  NS    ns-0.awsdns-00.com. ;
       IN NS ns-1536.awsdns-00.co.uk. ;
       IN NS ns-1024.awsdns-00.org. ;
       IN NS ns-512.awsdns-00.net. ;
-$ORIGIN {{ cage_name }}.datalake.{{sovrn_dns_domain}}.
+$ORIGIN {{ cage_name }}.datalake.{{sovrn_domain}}.
 
-; Set the address for localhost.{{ cage_name }}.datalake.{{sovrn_dns_domain}}
+; Set the address for localhost.{{ cage_name }}.datalake.{{sovrn_domain}}
 localhost    IN A 127.0.0.1
 
 ; Set the hostnames in alphabetical order
