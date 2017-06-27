@@ -61,7 +61,7 @@ database_acl:
           From: 5439
           To: 5439
 # BEGIN sovrn customizations
-    - name: SovrnInboundMysqlNetworkAclEntry_1
+    - name: SovrnInboundMysqlNetworkAclEntry1
       properties:
         RuleNumber: 201
         Protocol: 6 #tcp
@@ -70,7 +70,7 @@ database_acl:
         PortRange:
           From: 3306
           To: 3306
-    - name: SovrnInboundMysqlNetworkAclEntry_2
+    - name: SovrnInboundMysqlNetworkAclEntry2
       properties:
         RuleNumber: 202
         Protocol: 6 #tcp
@@ -79,7 +79,7 @@ database_acl:
         PortRange:
           From: 3306
           To: 3306
-    - name: SovrnInboundMysqlNetworkAclEntry_3
+    - name: SovrnInboundMysqlNetworkAclEntry3
       properties:
         RuleNumber: 203
         Protocol: 6 #tcp

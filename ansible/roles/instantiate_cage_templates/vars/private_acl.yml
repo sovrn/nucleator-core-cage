@@ -88,7 +88,7 @@ private_acl:
         PortRange:
           From: 53
           To: 53
-    - name: SovrnInboundHttpPrivateNetworkAclEntry_1
+    - name: SovrnInboundHttpPrivateNetworkAclEntry1
       properties:
         RuleNumber: 202
         Protocol: 6 #tcp
@@ -97,7 +97,7 @@ private_acl:
         PortRange:
           From: 80
           To: 80
-    - name: SovrnInboundHttpPrivateNetworkAclEntry_2
+    - name: SovrnInboundHttpPrivateNetworkAclEntry2
       properties:
         RuleNumber: 203
         Protocol: 6 #tcp
@@ -106,7 +106,7 @@ private_acl:
         PortRange:
           From: 80
           To: 80
-    - name: SovrnInboundHttpPrivateNetworkAclEntry_3
+    - name: SovrnInboundHttpPrivateNetworkAclEntry3
       properties:
         RuleNumber: 204
         Protocol: 6 #tcp
@@ -115,7 +115,7 @@ private_acl:
         PortRange:
           From: 80
           To: 80
-    - name: SovrnInboundHttpsPrivateNetworkAclEntry_1
+    - name: SovrnInboundHttpsPrivateNetworkAclEntry1
       properties:
         RuleNumber: 205
         Protocol: 6 #tcp
@@ -124,7 +124,7 @@ private_acl:
         PortRange:
           From: 443
           To: 443
-    - name: SovrnInboundHttpsPrivateNetworkAclEntry_2
+    - name: SovrnInboundHttpsPrivateNetworkAclEntry2
       properties:
         RuleNumber: 206
         Protocol: 6 #tcp
@@ -133,7 +133,7 @@ private_acl:
         PortRange:
           From: 443
           To: 443
-    - name: SovrnOutboundPrivateNetworkAclEntry_3
+    - name: SovrnOutboundPrivateNetworkAclEntry3
       properties:
         RuleNumber: 207
         Protocol: 6 #tcp
@@ -142,7 +142,7 @@ private_acl:
         PortRange:
           From: 1
           To: 65535
-    - name: SovrnOutboundPrivateNetworkAclEntry_4
+    - name: SovrnOutboundPrivateNetworkAclEntry4
       properties:
         RuleNumber: 208
         Protocol: 6 #tcp
@@ -151,7 +151,7 @@ private_acl:
         PortRange:
           From: 1
           To: 65535
-    - name: SovrnOutboundPrivateNetworkAclEntry_5
+    - name: SovrnOutboundPrivateNetworkAclEntry5
       properties:
         RuleNumber: 209
         Protocol: 17 #udp
@@ -160,7 +160,7 @@ private_acl:
         PortRange:
           From: 0
           To: 65535
-    - name: SovrnOutboundPrivateNetworkAclEntry_6
+    - name: SovrnOutboundPrivateNetworkAclEntry6
       properties:
         RuleNumber: 210
         Protocol: 6 #tcp
@@ -169,7 +169,7 @@ private_acl:
         PortRange:
           From: 0
           To: 65535
-    - name: SovrnOutboundPrivateNetworkAclEntry_7
+    - name: SovrnOutboundPrivateNetworkAclEntry7
       properties:
         RuleNumber: 211
         Protocol: 17 #udp
@@ -178,7 +178,7 @@ private_acl:
         PortRange:
           From: 0
           To: 65535
-    - name: SovrnOutboundPrivateNetworkAclEntry_8
+    - name: SovrnOutboundPrivateNetworkAclEntry8
       properties:
         RuleNumber: 212
         Protocol: 6 #tcp
@@ -187,7 +187,7 @@ private_acl:
         PortRange:
           From: 0
           To: 65535
-    - name: SovrnOutboundPrivateNetworkAclEntry_9
+    - name: SovrnOutboundPrivateNetworkAclEntry9
       properties:
         RuleNumber: 213
         Protocol: 17 #udp
@@ -196,7 +196,7 @@ private_acl:
         PortRange:
           From: 0
           To: 65535
-    - name: SovrnOutboundPrivateNetworkAclEntry_10
+    - name: SovrnOutboundPrivateNetworkAclEntry10
       properties:
         RuleNumber: 214
         Protocol: 6 #tcp
@@ -206,7 +206,7 @@ private_acl:
           From: 0
           To: 65535
 # TODO: The blanket rule that needs to be eliminated!!!
-    - name: SovrnOutboundPrivateNetworkAclEntry_11
+    - name: SovrnOutboundPrivateNetworkAclEntry11
       properties:
         RuleNumber: 215
         Protocol: 6 #tcp
