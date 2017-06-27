@@ -1135,6 +1135,7 @@
     },
     "BindVPCDHCPOptionsAssociation" : {
         "Type" : "AWS::EC2::VPCDHCPOptionsAssociation",
+        "DependsOn": "BindDhcpOptions",
         "Properties" : {
         "VpcId" : {"Ref" : "VPC"},
         "DhcpOptionsId" : {"Ref" : "BindDhcpOptions"}
@@ -1142,6 +1143,7 @@
     },
     "BindDhcpOptions" : {
         "Type" : "AWS::EC2::DHCPOptions",
+        "DependsOn": "BindInstance",
         "Properties" : {
             "DomainName" :  {
                 "Fn::Join": [
@@ -1159,6 +1161,7 @@
     },
     "BindDnsRecord": {
         "Type": "AWS::Route53::RecordSet",
+        "DependsOn": "BindInstance",
         "Properties": {
             "HostedZoneName": "{{ cage_name }}.{{customer_domain}}.",
             "Comment": "A record for the bind server.",
@@ -1204,6 +1207,7 @@
     },
     "BindInstance": {
         "Type": "AWS::CloudFormation::Stack",
+        "DependsOn": "BindSecurityGroup",
         "Properties": {
             "TemplateURL": "{{template_s3_accessor_url}}/instance.json",
             "Parameters": {
