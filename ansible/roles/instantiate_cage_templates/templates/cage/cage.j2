@@ -33,6 +33,13 @@
             "AllowedValues": {{ supported_ec2_instance_types|to_json }},
             "ConstraintDescription": "must be a valid EC2 instance type."
         },
+        "BindInstanceType": {
+            "Description": "Bind Host EC2 instance type",
+            "Type": "String",
+            "Default": {{default_ec2_instance_type|to_json}},
+            "AllowedValues": {{ supported_ec2_instance_types|to_json }},
+            "ConstraintDescription": "must be a valid EC2 instance type."
+        },
         "ServiceRole": {
             "Type": "String",
             "Description": "Name of the Role to use to establish an Instance Profile to associate with the instance"
@@ -41,7 +48,7 @@
 	    "Type": "String",
 	    "Default": "False",
 	    "Description": "Set to 'True' to create Elb Logging S3 Bucket & Policy."
-	}	
+	}
     },
     "Resources": {
 	"Vpc": {
@@ -61,6 +68,9 @@
 		    "NatInstanceType": {
 			"Ref": "NatInstanceType"
 		    },
+                              "BindInstanceType": {
+                                  "Ref": "BindInstanceType"
+                              },
 		    "ServiceRole": {
 			"Ref": "ServiceRole"
 		    },
