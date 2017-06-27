@@ -44,14 +44,14 @@
             "Type": "String",
             "Description": "Name of the Role to use to establish an Instance Profile to associate with the instance"
         },
-	"CreateBucket": {
-	    "Type": "String",
-	    "Default": "False",
-	    "Description": "Set to 'True' to create Elb Logging S3 Bucket & Policy."
-	}
+    "CreateBucket": {
+        "Type": "String",
+        "Default": "False",
+        "Description": "Set to 'True' to create Elb Logging S3 Bucket & Policy."
+    }
     },
     "Conditions": {
-	"CreateBucketCondition": {"Fn::Equals": [{"Ref": "CreateBucket"}, "True"]}
+    "CreateBucketCondition": {"Fn::Equals": [{"Ref": "CreateBucket"}, "True"]}
     },
     "Mappings": {
         "AZMap": {{ aws_accounts[account_name]["map_region_plus_redundant_zone_number_to_vpc_valid_az"] | to_json }},
@@ -62,61 +62,61 @@
     "Resources": {
 
 {# Establish a Nucleator-maintained logging bucket in this region #}
-	"ElbLoggingBucket" : {
-	    "Type" : "AWS::S3::Bucket",
-	    "Metadata" : { "DocString" :
-			   "S3 Bucket used by Nucleator to store logs from elastic loadbalancers in Nucleator Stacksets." },
-	    "Condition" : "CreateBucketCondition",
-	    "DeletionPolicy" : "Retain",
-	    "Properties" : {
-		"BucketName" : "elb-{{nucleator_logging_bucketname_specification}}-{{cage_name}}",
-		"Tags": [
-		    { "Key": "Name", "Value": "elb-{{nucleator_logging_bucketname_specification}}-{{cage_name}}" },
-		    { "Key": "NucleatorGroup", "Value": "nucleatorElbLogging" },
-		    {{ nucleator_common_tags | to_json_fragment }}
-		]
-	    }
-	},
+    "ElbLoggingBucket" : {
+        "Type" : "AWS::S3::Bucket",
+        "Metadata" : { "DocString" :
+               "S3 Bucket used by Nucleator to store logs from elastic loadbalancers in Nucleator Stacksets." },
+        "Condition" : "CreateBucketCondition",
+        "DeletionPolicy" : "Retain",
+        "Properties" : {
+        "BucketName" : "elb-{{nucleator_logging_bucketname_specification}}-{{cage_name}}",
+        "Tags": [
+            { "Key": "Name", "Value": "elb-{{nucleator_logging_bucketname_specification}}-{{cage_name}}" },
+            { "Key": "NucleatorGroup", "Value": "nucleatorElbLogging" },
+            {{ nucleator_common_tags | to_json_fragment }}
+        ]
+        }
+    },
 
-	"ElbLoggingBucketPolicy" : {
-	    "Type" : "AWS::S3::BucketPolicy",
-	    "Metadata" : { "DocString" :
-			   "Policy that permits AWS ELB Service to put logging information into the ELB Logging Bucket" },
-	    "Condition" : "CreateBucketCondition",
-	    "DeletionPolicy" : "Retain",
-	    "Properties" : {
-		"Bucket" : {
-		    "Ref": "ElbLoggingBucket"
-		},
-		"PolicyDocument": {
-		    "Version": "2008-10-17",
-		    "Id": "ElbLoggingBucketPolicy-{{nucleator_logging_bucketname_specification}}-{{cage_name}}",
-		    "Statement": [
-			{
-			    "Sid": "AwsPut-{{nucleator_logging_bucketname_specification}}-{{cage_name}}",
-			    "Effect": "Allow",
-			    "Principal": {
-				"AWS": [
-				    "127311923021",
-				    "027434742980",
-				    "797873946194",
-				    "156460612806",
-				    "054676820928",
-				    "582318560864",
-				    "114774131450",
-				    "783225319266",
-				    "507241528517"
-				]
-			    },
-			    "Action": [
-				"s3:PutObject"
-			    ],
-			    "Resource": "arn:aws:s3:::elb-{{nucleator_logging_bucketname_specification}}-{{cage_name}}/*"
-			}
-		    ]
-		}
-	    }
-	},
+    "ElbLoggingBucketPolicy" : {
+        "Type" : "AWS::S3::BucketPolicy",
+        "Metadata" : { "DocString" :
+               "Policy that permits AWS ELB Service to put logging information into the ELB Logging Bucket" },
+        "Condition" : "CreateBucketCondition",
+        "DeletionPolicy" : "Retain",
+        "Properties" : {
+        "Bucket" : {
+            "Ref": "ElbLoggingBucket"
+        },
+        "PolicyDocument": {
+            "Version": "2008-10-17",
+            "Id": "ElbLoggingBucketPolicy-{{nucleator_logging_bucketname_specification}}-{{cage_name}}",
+            "Statement": [
+            {
+                "Sid": "AwsPut-{{nucleator_logging_bucketname_specification}}-{{cage_name}}",
+                "Effect": "Allow",
+                "Principal": {
+                "AWS": [
+                    "127311923021",
+                    "027434742980",
+                    "797873946194",
+                    "156460612806",
+                    "054676820928",
+                    "582318560864",
+                    "114774131450",
+                    "783225319266",
+                    "507241528517"
+                ]
+                },
+                "Action": [
+                "s3:PutObject"
+                ],
+                "Resource": "arn:aws:s3:::elb-{{nucleator_logging_bucketname_specification}}-{{cage_name}}/*"
+            }
+            ]
+        }
+        }
+    },
         "VPC": {
             "Type": "AWS::EC2::VPC",
             "Properties": {
@@ -129,15 +129,15 @@
                                 ".",
                                 [
                                     "vpc",
-				    "{{cage_name}}",
-				    "{{customer_name}}",
+                    "{{cage_name}}",
+                    "{{customer_name}}",
                                     "unresolvable"
                                 ]
                             ]
                         }
                     },
-		    { "Key": "NucleatorGroup", "Value": "networking" },
-		    {{ nucleator_common_tags | to_json_fragment }}
+            { "Key": "NucleatorGroup", "Value": "networking" },
+            {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
         },
@@ -164,17 +164,17 @@
                             "Fn::Join": [
                                 ".",
                                 [
-				    "public1",
+                    "public1",
                                     "vpc",
-				    "{{cage_name}}",
-				    "{{customer_name}}",
+                    "{{cage_name}}",
+                    "{{customer_name}}",
                                     "unresolvable"
                                 ]
                             ]
                         }
                     },
-		    { "Key": "NucleatorGroup", "Value": "networking" },
-		    {{ nucleator_common_tags | to_json_fragment }}
+            { "Key": "NucleatorGroup", "Value": "networking" },
+            {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
         },
@@ -201,17 +201,17 @@
                             "Fn::Join": [
                                 ".",
                                 [
-				    "public2",
+                    "public2",
                                     "vpc",
-				    "{{cage_name}}",
-				    "{{customer_name}}",
+                    "{{cage_name}}",
+                    "{{customer_name}}",
                                     "unresolvable"
                                 ]
                             ]
                         }
                     },
-		    { "Key": "NucleatorGroup", "Value": "networking" },
-		    {{ nucleator_common_tags | to_json_fragment }}
+            { "Key": "NucleatorGroup", "Value": "networking" },
+            {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
         },
@@ -225,17 +225,17 @@
                             "Fn::Join": [
                                 ".",
                                 [
-				    "gateway",
+                    "gateway",
                                     "vpc",
-				    "{{cage_name}}",
-				    "{{customer_name}}",
+                    "{{cage_name}}",
+                    "{{customer_name}}",
                                     "unresolvable"
                                 ]
                             ]
                         }
                     },
-		    { "Key": "NucleatorGroup", "Value": "networking" },
-		    {{ nucleator_common_tags | to_json_fragment }}
+            { "Key": "NucleatorGroup", "Value": "networking" },
+            {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
         },
@@ -263,18 +263,18 @@
                             "Fn::Join": [
                                 ".",
                                 [
-				    "routes",
-				    "public",
+                    "routes",
+                    "public",
                                     "vpc",
-				    "{{cage_name}}",
-				    "{{customer_name}}",
+                    "{{cage_name}}",
+                    "{{customer_name}}",
                                     "unresolvable"
                                 ]
                             ]
                         }
                     },
-		    { "Key": "NucleatorGroup", "Value": "networking" },
-		    {{ nucleator_common_tags | to_json_fragment }}
+            { "Key": "NucleatorGroup", "Value": "networking" },
+            {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
         },
@@ -326,70 +326,70 @@
                             "Fn::Join": [
                                 ".",
                                 [
-				    "acl",
-				    "public",
+                    "acl",
+                    "public",
                                     "vpc",
-				    "{{cage_name}}",
-				    "{{customer_name}}",
+                    "{{cage_name}}",
+                    "{{customer_name}}",
                                     "unresolvable"
                                 ]
                             ]
                         }
                     },
-		    { "Key": "NucleatorGroup", "Value": "networking" },
-		    {{ nucleator_common_tags | to_json_fragment }}
+            { "Key": "NucleatorGroup", "Value": "networking" },
+            {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
         },
-	{% if not NUCLEATOR_CAGE_REMOVE_INBOUND_PUBLIC_RULES %}
-	{% set rule_counter = [NUCLEATOR_CAGE_CIDR_WHITELIST_INITIAL_RULENUM] %}
-	{% for entry in (public_acl.inbound_whitelist_entries if not NUCLEATOR_CAGE_OPENVPN_ENABLED else (public_acl.inbound_whitelist_entries|list + public_acl.inbound_whitelist_openvpn_entries|list)) %}
-	{% set cidr_counter=0 %}
-	{% for whitelist_cidr in NUCLEATOR_CAGE_CIDR_WHITELIST %}
-	"{{entry.name}}{{cidr_counter}}" : {
+    {% if not NUCLEATOR_CAGE_REMOVE_INBOUND_PUBLIC_RULES %}
+    {% set rule_counter = [NUCLEATOR_CAGE_CIDR_WHITELIST_INITIAL_RULENUM] %}
+    {% for entry in (public_acl.inbound_whitelist_entries if not NUCLEATOR_CAGE_OPENVPN_ENABLED else (public_acl.inbound_whitelist_entries|list + public_acl.inbound_whitelist_openvpn_entries|list)) %}
+    {% set cidr_counter=0 %}
+    {% for whitelist_cidr in NUCLEATOR_CAGE_CIDR_WHITELIST %}
+    "{{entry.name}}{{cidr_counter}}" : {
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "NetworkAclId": {
                     "Ref": "PublicNetworkAcl"
                 },
                 "Egress": "false",
-		"RuleNumber": {{rule_counter[-1]}},
-		"CidrBlock": "{{whitelist_cidr}}",
-		{{entry.properties | to_json_fragment}}
+        "RuleNumber": {{rule_counter[-1]}},
+        "CidrBlock": "{{whitelist_cidr}}",
+        {{entry.properties | to_json_fragment}}
             }
         },
-	{% if rule_counter.append(rule_counter[-1]+1) %}{% endif %}
-	{% set cidr_counter = cidr_counter + 1 %}
-	{% endfor %}
-	{% endfor %}
-	{% for entry in public_acl.inbound_entries %}
-	"{{entry.name}}" : {
+    {% if rule_counter.append(rule_counter[-1]+1) %}{% endif %}
+    {% set cidr_counter = cidr_counter + 1 %}
+    {% endfor %}
+    {% endfor %}
+    {% for entry in public_acl.inbound_entries %}
+    "{{entry.name}}" : {
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "NetworkAclId": {
                     "Ref": "PublicNetworkAcl"
                 },
                 "Egress": "false",
-		"RuleNumber": {{rule_counter[-1]}},
-		{{entry.properties | to_json_fragment}}
+        "RuleNumber": {{rule_counter[-1]}},
+        {{entry.properties | to_json_fragment}}
             }
         },
-	{% if rule_counter.append(rule_counter[-1]+1) %}{% endif %}
-	{% endfor %}
-	{% endif %}
+    {% if rule_counter.append(rule_counter[-1]+1) %}{% endif %}
+    {% endfor %}
+    {% endif %}
 
-	{% for entry in public_acl.outbound_entries %}
-	"{{entry.name}}" : {
+    {% for entry in public_acl.outbound_entries %}
+    "{{entry.name}}" : {
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "NetworkAclId": {
                     "Ref": "PublicNetworkAcl"
                 },
                 "Egress": "true",
-		{{entry.properties | to_json_fragment}}
+        {{entry.properties | to_json_fragment}}
             }
         },
-	{% endfor %}
+    {% endfor %}
 
         "PublicSubnet1NetworkAclAssociation": {
             "Type": "AWS::EC2::SubnetNetworkAclAssociation",
@@ -436,17 +436,17 @@
                             "Fn::Join": [
                                 ".",
                                 [
-				    "private1",
+                    "private1",
                                     "vpc",
-				    "{{cage_name}}",
-				    "{{customer_name}}",
+                    "{{cage_name}}",
+                    "{{customer_name}}",
                                     "unresolvable"
                                 ]
                             ]
                         }
                     },
-		    { "Key": "NucleatorGroup", "Value": "networking" },
-		    {{ nucleator_common_tags | to_json_fragment }}
+            { "Key": "NucleatorGroup", "Value": "networking" },
+            {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
         },
@@ -473,17 +473,17 @@
                             "Fn::Join": [
                                 ".",
                                 [
-				    "private2",
+                    "private2",
                                     "vpc",
-				    "{{cage_name}}",
-				    "{{customer_name}}",
+                    "{{cage_name}}",
+                    "{{customer_name}}",
                                     "unresolvable"
                                 ]
                             ]
                         }
                     },
-		    { "Key": "NucleatorGroup", "Value": "networking" },
-		    {{ nucleator_common_tags | to_json_fragment }}
+            { "Key": "NucleatorGroup", "Value": "networking" },
+            {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
         },
@@ -500,18 +500,18 @@
                             "Fn::Join": [
                                 ".",
                                 [
-				    "routes",
-				    "private",
+                    "routes",
+                    "private",
                                     "vpc",
-				    "{{cage_name}}",
-				    "{{customer_name}}",
+                    "{{cage_name}}",
+                    "{{customer_name}}",
                                     "unresolvable"
                                 ]
                             ]
                         }
                     },
-		    { "Key": "NucleatorGroup", "Value": "networking" },
-		    {{ nucleator_common_tags | to_json_fragment }}
+            { "Key": "NucleatorGroup", "Value": "networking" },
+            {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
         },
@@ -565,47 +565,47 @@
                             "Fn::Join": [
                                 ".",
                                 [
-				    "acl",
-				    "private",
+                    "acl",
+                    "private",
                                     "vpc",
-				    "{{cage_name}}",
-				    "{{customer_name}}",
+                    "{{cage_name}}",
+                    "{{customer_name}}",
                                     "unresolvable"
                                 ]
                             ]
                         }
                     },
-		    { "Key": "NucleatorGroup", "Value": "networking" },
-		    {{ nucleator_common_tags | to_json_fragment }}
+            { "Key": "NucleatorGroup", "Value": "networking" },
+            {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
         },
 
-	{% for entry in private_acl.inbound_entries %}
-	"{{entry.name}}" : {
+    {% for entry in private_acl.inbound_entries %}
+    "{{entry.name}}" : {
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "NetworkAclId": {
                     "Ref": "PrivateNetworkAcl"
                 },
                 "Egress": "false",
-		{{entry.properties | to_json_fragment}}
+        {{entry.properties | to_json_fragment}}
             }
         },
-	{% endfor %}
+    {% endfor %}
 
-	{% for entry in private_acl.outbound_entries %}
-	"{{entry.name}}" : {
+    {% for entry in private_acl.outbound_entries %}
+    "{{entry.name}}" : {
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "NetworkAclId": {
                     "Ref": "PrivateNetworkAcl"
                 },
                 "Egress": "true",
-		{{entry.properties | to_json_fragment}}
+        {{entry.properties | to_json_fragment}}
             }
         },
-	{% endfor %}
+    {% endfor %}
 
         "PrivateSubnet1NetworkAclAssociation": {
             "Type": "AWS::EC2::SubnetNetworkAclAssociation",
@@ -737,8 +737,8 @@
                 "VpcId": {
                     "Ref": "VPC"
                 },
-		{{ nat_security_group_ingress | to_json_fragment }},
-		{{ nat_security_group_egress | to_json_fragment }},
+        {{ nat_security_group_ingress | to_json_fragment }},
+        {{ nat_security_group_egress | to_json_fragment }},
                 "Tags": [
                     {
                         "Key": "Name",
@@ -746,17 +746,17 @@
                             "Fn::Join": [
                                 ".",
                                 [
-				    "security",
-				    "nat",
-				    "{{cage_name}}",
-				    "{{customer_name}}",
+                    "security",
+                    "nat",
+                    "{{cage_name}}",
+                    "{{customer_name}}",
                                     "unresolvable"
                                 ]
                             ]
                         }
                     },
-		    { "Key": "NucleatorGroup", "Value": "networking" },
-		    {{ nucleator_common_tags | to_json_fragment }}
+            { "Key": "NucleatorGroup", "Value": "networking" },
+            {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
         },
@@ -783,17 +783,17 @@
                             "Fn::Join": [
                                 ".",
                                 [
-				    "db1",
+                    "db1",
                                     "vpc",
-				    "{{cage_name}}",
-				    "{{customer_name}}",
+                    "{{cage_name}}",
+                    "{{customer_name}}",
                                     "unresolvable"
                                 ]
                             ]
                         }
                     },
-		    { "Key": "NucleatorGroup", "Value": "networking" },
-		    {{ nucleator_common_tags | to_json_fragment }}
+            { "Key": "NucleatorGroup", "Value": "networking" },
+            {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
         },
@@ -820,17 +820,17 @@
                             "Fn::Join": [
                                 ".",
                                 [
-				    "db2",
+                    "db2",
                                     "vpc",
-				    "{{cage_name}}",
-				    "{{customer_name}}",
+                    "{{cage_name}}",
+                    "{{customer_name}}",
                                     "unresolvable"
                                 ]
                             ]
                         }
                     },
-		    { "Key": "NucleatorGroup", "Value": "networking" },
-		    {{ nucleator_common_tags | to_json_fragment }}
+            { "Key": "NucleatorGroup", "Value": "networking" },
+            {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
         },
@@ -847,18 +847,18 @@
                             "Fn::Join": [
                                 ".",
                                 [
-				    "routes",
-				    "db",
+                    "routes",
+                    "db",
                                     "vpc",
-				    "{{cage_name}}",
-				    "{{customer_name}}",
+                    "{{cage_name}}",
+                    "{{customer_name}}",
                                     "unresolvable"
                                 ]
                             ]
                         }
                     },
-		    { "Key": "NucleatorGroup", "Value": "networking" },
-		    {{ nucleator_common_tags | to_json_fragment }}
+            { "Key": "NucleatorGroup", "Value": "networking" },
+            {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
         },
@@ -912,47 +912,47 @@
                             "Fn::Join": [
                                 ".",
                                 [
-				    "acl",
-				    "db",
+                    "acl",
+                    "db",
                                     "vpc",
-				    "{{cage_name}}",
-				    "{{customer_name}}",
+                    "{{cage_name}}",
+                    "{{customer_name}}",
                                     "unresolvable"
                                 ]
                             ]
                         }
                     },
-		    { "Key": "NucleatorGroup", "Value": "networking" },
-		    {{ nucleator_common_tags | to_json_fragment }}
+            { "Key": "NucleatorGroup", "Value": "networking" },
+            {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
         },
 
-	{% for entry in database_acl.inbound_entries %}
-	"{{entry.name}}" : {
+    {% for entry in database_acl.inbound_entries %}
+    "{{entry.name}}" : {
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "NetworkAclId": {
                     "Ref": "DatabaseNetworkAcl"
                 },
                 "Egress": "false",
-		{{entry.properties | to_json_fragment}}
+        {{entry.properties | to_json_fragment}}
             }
         },
-	{% endfor %}
+    {% endfor %}
 
-	{% for entry in database_acl.outbound_entries %}
-	"{{entry.name}}" : {
+    {% for entry in database_acl.outbound_entries %}
+    "{{entry.name}}" : {
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "NetworkAclId": {
                     "Ref": "DatabaseNetworkAcl"
                 },
                 "Egress": "true",
-		{{entry.properties | to_json_fragment}}
+        {{entry.properties | to_json_fragment}}
             }
         },
-	{% endfor %}
+    {% endfor %}
 
         "DatabaseSubnet1NetworkAclAssociation": {
             "Type": "AWS::EC2::SubnetNetworkAclAssociation",
@@ -995,17 +995,17 @@
                             "Fn::Join": [
                                 ".",
                                 [
-				    "dbsubnetgroup",
+                    "dbsubnetgroup",
                                     "vpc",
-				    "{{cage_name}}",
-				    "{{customer_name}}",
+                    "{{cage_name}}",
+                    "{{customer_name}}",
                                     "unresolvable"
                                 ]
                             ]
                         }
                     },
-		    { "Key": "NucleatorGroup", "Value": "networking" },
-    		    {{ nucleator_common_tags | to_json_fragment }}
+            { "Key": "NucleatorGroup", "Value": "networking" },
+                {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
         },
@@ -1098,18 +1098,18 @@
                     "Ref": "VPC"
                 },
                 "SecurityGroupIngress": [
-		    {% for entry in bastion_cidr_whitelist_ingress_rules %}
-		    {% set outer_loop = loop %}
-		    {% for whitelist_cidr in NUCLEATOR_CAGE_CIDR_WHITELIST %}
-		    {
-			"CidrIp": "{{whitelist_cidr}}",
-			{{entry|to_json_fragment}}
-		    }{{"" if loop.last and outer_loop.last else ","}}
-		    {% endfor %}
-		    {% endfor %}
+            {% for entry in bastion_cidr_whitelist_ingress_rules %}
+            {% set outer_loop = loop %}
+            {% for whitelist_cidr in NUCLEATOR_CAGE_CIDR_WHITELIST %}
+            {
+            "CidrIp": "{{whitelist_cidr}}",
+            {{entry|to_json_fragment}}
+            }{{"" if loop.last and outer_loop.last else ","}}
+            {% endfor %}
+            {% endfor %}
                 ],
                 "SecurityGroupEgress": [
-		    {{bastion_egress_rules|to_json_fragment}}
+            {{bastion_egress_rules|to_json_fragment}}
                 ],
                 "Tags": [
                     {
@@ -1118,124 +1118,132 @@
                             "Fn::Join": [
                                 ".",
                                 [
-				    "security",
+                    "security",
                                     "bastion",
-				    "{{cage_name}}",
-				    "{{customer_name}}",
+                    "{{cage_name}}",
+                    "{{customer_name}}",
                                     "unresolvable"
                                 ]
                             ]
                         }
                     },
-		    { "Key": "NucleatorGroup", "Value": "networking" },
-    		    {{ nucleator_common_tags | to_json_fragment }}
+            { "Key": "NucleatorGroup", "Value": "networking" },
+                {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
-        }
-    },
-    "BindDhcpOptions" : {
-        "Type" : "AWS::EC2::DHCPOptions",
-        "DependsOn": "BindInstance",
-        "Properties" : {
-            "DomainName" :  {
-                "Fn::Join": [
-                    "",
-                    [
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        ".compute.internal"
-                    ]
-                ]
-            },
-            "DomainNameServers" : [ { "Fn::GetAtt" : [ "BindInstance", "PrivateIp" ] } ]
-        }
-    },
-    "BindDnsRecord": {
-        "Type": "AWS::Route53::RecordSet",
-        "DependsOn": "BindInstance",
-        "Properties": {
-            "HostedZoneName": "{{ cage_name }}.{{customer_domain}}.",
-            "Comment": "A record for the bind server.",
-            "Name": "bind.{{cage_name}}.{{customer_domain}}",
-            "Type": "CNAME",
-            "TTL": "300",
-            "ResourceRecords": [
-                {
-                   "Fn::GetAtt" : [ "BindInstance", "PrivateIp" ]
-                }
-            ]
-        }
-    },
-    "BindSecurityGroup": {
-        "Type": "AWS::EC2::SecurityGroup",
-        "Properties": {
-            "GroupDescription": "Enable internal access to the Bind device",
-            "VpcId": {
-                "Ref": "VPC"
-            },
-    {{ bind_security_group_ingress | to_json_fragment }},
-    {{ bind_security_group_egress | to_json_fragment }},
-            "Tags": [
-                {
-                    "Key": "Name",
-                    "Value": {
-                        "Fn::Join": [
-                            ".",
-                            [
-                "security",
-                "bind",
-                "{{cage_name}}",
-                "{{customer_name}}",
-                                "unresolvable"
-                            ]
+        },
+        "BindVPCDHCPOptionsAssociation" : {
+            "Type" : "AWS::EC2::VPCDHCPOptionsAssociation",
+            "DependsOn": "BindDhcpOptions",
+            "Properties" : {
+                "VpcId" : {"Ref" : "VPC"},
+                "DhcpOptionsId" : {"Ref" : "BindDhcpOptions"}
+            }
+        },
+        "BindDhcpOptions" : {
+            "Type" : "AWS::EC2::DHCPOptions",
+            "DependsOn": "BindInstance",
+            "Properties" : {
+                "DomainName" :  {
+                    "Fn::Join": [
+                        "",
+                        [
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            ".compute.internal"
                         ]
+                    ]
+                },
+                "DomainNameServers" : [ { "Fn::GetAtt" : [ "BindInstance", "PrivateIp" ] } ]
+            }
+        },
+        "BindDnsRecord": {
+            "Type": "AWS::Route53::RecordSet",
+            "DependsOn": "BindInstance",
+            "Properties": {
+                "HostedZoneName": "{{ cage_name }}.{{customer_domain}}.",
+                "Comment": "A record for the bind server.",
+                "Name": "bind.{{cage_name}}.{{customer_domain}}",
+                "Type": "CNAME",
+                "TTL": "300",
+                "ResourceRecords": [
+                    {
+                       "Fn::GetAtt" : [ "BindInstance", "PrivateIp" ]
                     }
+                ]
+            }
+        },
+        "BindSecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Enable internal access to the Bind device",
+                "VpcId": {
+                    "Ref": "VPC"
                 },
-        { "Key": "NucleatorGroup", "Value": "networking" },
-        {{ nucleator_common_tags | to_json_fragment }}
-            ]
-        }
-    },
-    "BindInstance": {
-        "Type": "AWS::CloudFormation::Stack",
-        "DependsOn": "BindSecurityGroup",
-        "Properties": {
-            "TemplateURL": "{{template_s3_accessor_url}}/instance.json",
-            "Parameters": {
-                "InstanceName": "bind.{{cage_name}}.{{customer_domain}}",
-                "NucleatorGroup": "bind",
-                "InstanceType": {
-                    "Ref": "BindInstanceType"
-                },
-                "KeypairName": {
-                    "Ref": "KeypairName"
-                },
-                "ImageId": {
-                    "Fn::FindInMap": [
-                        "AWSRegionArch2BastionAMI",
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        {
-                            "Fn::FindInMap": [
-                                "AWSInstanceType2Arch",
-                                {
-                                    "Ref": "BindInstanceType"
-                                },
-                                "Arch"
+        {{ bind_security_group_ingress | to_json_fragment }},
+        {{ bind_security_group_egress | to_json_fragment }},
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                ".",
+                                [
+                    "security",
+                    "bind",
+                    "{{cage_name}}",
+                    "{{customer_name}}",
+                                    "unresolvable"
+                                ]
                             ]
                         }
-                    ]
-                },
-                "ServiceRole": {
-                    "Ref": "ServiceRole"
-                },
-                "SubnetId": {
-                    "Ref": "PrivateSubnet2"
-                },
-                "SecurityGroupId": {
-                    "Ref": "BindSecurityGroup"
+                    },
+            { "Key": "NucleatorGroup", "Value": "networking" },
+            {{ nucleator_common_tags | to_json_fragment }}
+                ]
+            }
+        },
+        "BindInstance": {
+            "Type": "AWS::CloudFormation::Stack",
+            "DependsOn": "BindSecurityGroup",
+            "Properties": {
+                "TemplateURL": "{{template_s3_accessor_url}}/instance.json",
+                "Parameters": {
+                    "InstanceName": "bind.{{cage_name}}.{{customer_domain}}",
+                    "NucleatorGroup": "bind",
+                    "InstanceType": {
+                        "Ref": "BindInstanceType"
+                    },
+                    "KeypairName": {
+                        "Ref": "KeypairName"
+                    },
+                    "ImageId": {
+                        "Fn::FindInMap": [
+                            "AWSRegionArch2BastionAMI",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            {
+                                "Fn::FindInMap": [
+                                    "AWSInstanceType2Arch",
+                                    {
+                                        "Ref": "BindInstanceType"
+                                    },
+                                    "Arch"
+                                ]
+                            }
+                        ]
+                    },
+                    "ServiceRole": {
+                        "Ref": "ServiceRole"
+                    },
+                    "SubnetId": {
+                        "Ref": "PrivateSubnet2"
+                    },
+                    "SecurityGroupId": {
+                        "Ref": "BindSecurityGroup"
+                    }
                 }
             }
         }
@@ -1295,10 +1303,10 @@
                 "Ref": "PublicSubnet2"
             }
         },
-	"PublicSubnet1Az": {
+    "PublicSubnet1Az": {
             "Description": "Availability zone in which the first public subnet resides",
             "Value": {
-		"Fn::FindInMap": [
+        "Fn::FindInMap": [
                     "AZMap",
                     {
                         "Ref": "AWS::Region"
@@ -1306,11 +1314,11 @@
                     "AZ1"
                 ]
             }
-	},
-	"PublicSubnet2Az": {
+    },
+    "PublicSubnet2Az": {
             "Description": "Availability zone in which the second public subnet resides",
             "Value": {
-		"Fn::FindInMap": [
+        "Fn::FindInMap": [
                     "AZMap",
                     {
                         "Ref": "AWS::Region"
@@ -1318,7 +1326,7 @@
                     "AZ2"
                 ]
             }
-	},
+    },
         "PrivateSubnet1Id": {
             "Description": "ID of the first redundant private application subnet",
             "Value": {
@@ -1331,10 +1339,10 @@
                 "Ref": "PrivateSubnet2"
             }
         },
-	"PrivateSubnet1Az": {
+    "PrivateSubnet1Az": {
             "Description": "Availability zone in which the first private subnet resides",
             "Value": {
-		"Fn::FindInMap": [
+        "Fn::FindInMap": [
                     "AZMap",
                     {
                         "Ref": "AWS::Region"
@@ -1342,11 +1350,11 @@
                     "AZ1"
                 ]
             }
-	},
-	"PrivateSubnet2Az": {
+    },
+    "PrivateSubnet2Az": {
             "Description": "Availability zone in which the second private subnet resides",
             "Value": {
-		"Fn::FindInMap": [
+        "Fn::FindInMap": [
                     "AZMap",
                     {
                         "Ref": "AWS::Region"
@@ -1354,7 +1362,7 @@
                     "AZ2"
                 ]
             }
-	},
+    },
         "DatabaseSubnet1Id": {
             "Description": "ID of database subnet1",
             "Value": {
@@ -1367,10 +1375,10 @@
                 "Ref": "DatabaseSubnet2"
             }
         },
-	"DatabaseSubnet1Az": {
+    "DatabaseSubnet1Az": {
             "Description": "Availability zone in which the first database subnet resides",
             "Value": {
-		"Fn::FindInMap": [
+        "Fn::FindInMap": [
                     "AZMap",
                     {
                         "Ref": "AWS::Region"
@@ -1378,11 +1386,11 @@
                     "AZ1"
                 ]
             }
-	},
-	"DatabaseSubnet2Az": {
+    },
+    "DatabaseSubnet2Az": {
             "Description": "Availability zone in which the second database subnet resides",
             "Value": {
-		"Fn::FindInMap": [
+        "Fn::FindInMap": [
                     "AZMap",
                     {
                         "Ref": "AWS::Region"
@@ -1390,7 +1398,7 @@
                     "AZ2"
                 ]
             }
-	},
+    },
         "DatabaseSubnetGroupId": {
             "Description": "ID of the database subnet group",
             "Value": {
