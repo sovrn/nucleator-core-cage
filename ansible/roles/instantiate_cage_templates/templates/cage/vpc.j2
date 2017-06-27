@@ -648,7 +648,17 @@
             "Properties": {
                 "TemplateURL": "{{template_s3_accessor_url}}/instance.json",
                 "Parameters": {
-                    "InstanceName": "nat.{{cage_name}}.{{customer_domain}}",
+                    "InstanceName": {
+                            "Fn::Join": [
+                                ".",
+                                [
+                                    "nat",
+                                    { "Fn::FindInMap": [ "AZMap", { "Ref": "AWS::Region" }, "AZ1" ] },
+                                    "{{cage_name}}",
+                                    "{{customer_domain}}"
+                                ]
+                            ]
+                    },
                     "NucleatorGroup": "nat",
                     "InstanceType": {
                         "Ref": "NatInstanceType"
@@ -686,13 +696,36 @@
                 }
             }
         },
+        "Nat2IpAddress": {
+            "Type": "AWS::EC2::EIP",
+            "DependsOn": "AttachGateway",
+            "Properties": {
+                "Domain": "vpc",
+                "InstanceId": {
+                    "Fn::GetAtt": [
+                        "Nat2Instance",
+                        "Outputs.InstanceId"
+                    ]
+                }
+            }
+        },
         "Nat2Instance": {
             "Type": "AWS::CloudFormation::Stack",
             "DependsOn": "NatSecurityGroup",
             "Properties": {
                 "TemplateURL": "{{template_s3_accessor_url}}/instance.json",
                 "Parameters": {
-                    "InstanceName": "nat2.{{cage_name}}.{{customer_domain}}",
+                    "InstanceName": {
+                            "Fn::Join": [
+                                ".",
+                                [
+                                    "nat",
+                                    { "Fn::FindInMap": [ "AZMap", { "Ref": "AWS::Region" }, "AZ2" ] },
+                                    "{{cage_name}}",
+                                    "{{customer_domain}}"
+                                ]
+                            ]
+                    },
                     "NucleatorGroup": "nat",
                     "InstanceType": {
                         "Ref": "NatInstanceType"
