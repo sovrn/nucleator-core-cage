@@ -1198,7 +1198,7 @@
                 "HostedZoneName": "{{ cage_name }}.{{customer_domain}}.",
                 "Comment": "A record for the bind server.",
                 "Name": "bind.{{cage_name}}.{{customer_domain}}",
-                "Type": "CNAME",
+                "Type": "A",
                 "TTL": "300",
                 "ResourceRecords": [ { "Fn::GetAtt": [ "BindInstance", "Outputs.PrivateIp" ] } ]
             }
