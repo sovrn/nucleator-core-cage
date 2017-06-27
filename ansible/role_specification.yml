@@ -93,6 +93,7 @@ role_specification:
                 - "ec2:DescribeInstances"
                 - "ec2:TerminateInstances"
                 - "ec2:CreateDhcpOptions"
+                - "ec2:DescribeDhcpOptions"
               Resource: '*'
             - Effect: Allow
               Action:
