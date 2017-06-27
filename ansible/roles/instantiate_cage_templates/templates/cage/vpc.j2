@@ -1188,7 +1188,23 @@
                         ]
                     ]
                 },
-                "DomainNameServers" : [ { "Fn::GetAtt": [ "BindInstance", "Outputs.PrivateIp" ] } ]
+                "DomainNameServers" : [ { "Fn::GetAtt": [ "BindInstance", "Outputs.PrivateIp" ] } ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Join": [
+                                ".",
+                                [
+                                    "{{cage_name}}",
+                                    "{{customer_domain}}",
+                                    "internal",
+                                    "resolver"
+                                ]
+                            ]
+                        }
+                    }
+                ]
             }
         },
         "BindDnsRecord": {
