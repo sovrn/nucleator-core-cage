@@ -38,7 +38,7 @@ role_specification:
         policy_document:
           Statement :
             - Effect : Allow
-              Action: 
+              Action:
                 - "cloudformation:CreateStack"
                 - "cloudformation:UpdateStack"
                 - "cloudformation:DescribeStacks"
@@ -54,7 +54,7 @@ role_specification:
                 - "s3:GetObject"
               Resource: arn:aws:s3:::*
             - Effect: Allow
-              Action: 
+              Action:
                 - "ec2:DescribeKeyPairs"
                 - "ec2:CreateKeyPair"
                 - "ec2:CreateInternetGateway"
@@ -92,6 +92,7 @@ role_specification:
                 - "ec2:ModifyInstanceAttribute"
                 - "ec2:DescribeInstances"
                 - "ec2:TerminateInstances"
+                - "ec2:CreateDhcpOptions"
               Resource: '*'
             - Effect: Allow
               Action:
@@ -110,6 +111,7 @@ role_specification:
                 - "route53:ListHostedZones"
                 - "route53:ChangeResourceRecordSets"
                 - "route53:GetChange"
+                - "route53:ListResourceRecordSets"
               Resource: '*'
   - role_name: NucleatorCageInventoryManager
     trust_policy:
@@ -125,10 +127,10 @@ role_specification:
         policy_document:
           Statement :
             - Effect : Allow
-              Action: 
+              Action:
                 - "ec2:DescribeInstances"
                 - "ec2:DescribeVolumes"
-                - "ec2:DescribeSnapshots"  
+                - "ec2:DescribeSnapshots"
                 - "ec2:StopInstances"
                 - "ec2:StartInstances"
                 - "ec2:CreateTags"
@@ -148,7 +150,7 @@ role_specification:
         policy_document:
           Statement :
             - Effect : Allow
-              Action: 
+              Action:
                 - "cloudformation:DescribeStacks"
                 - "cloudformation:DeleteStack"
                 - "cloudformation:DescribeStackEvents"
