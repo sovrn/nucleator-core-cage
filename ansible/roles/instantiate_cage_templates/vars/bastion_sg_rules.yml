@@ -85,4 +85,4 @@ bastion_egress_rules:
   - IpProtocol: tcp
     FromPort: 8088
     ToPort: 8088
-    CidrIp: "::/0"
+    CidrIp: "0.0.0.0/0"
