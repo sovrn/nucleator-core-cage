@@ -1133,14 +1133,6 @@
             }
         }
     },
-    "BindVPCDHCPOptionsAssociation" : {
-        "Type" : "AWS::EC2::VPCDHCPOptionsAssociation",
-        "DependsOn": "BindDhcpOptions",
-        "Properties" : {
-        "VpcId" : {"Ref" : "VPC"},
-        "DhcpOptionsId" : {"Ref" : "BindDhcpOptions"}
-        }
-    },
     "BindDhcpOptions" : {
         "Type" : "AWS::EC2::DHCPOptions",
         "DependsOn": "BindInstance",
