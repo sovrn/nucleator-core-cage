@@ -1137,7 +1137,7 @@
             "DependsOn": "BindDhcpOptions",
             "Properties" : {
                 "VpcId" : {"Ref" : "VPC"},
-                "DhcpOptionsId" : {"Ref" : "BindDhcpOptions"}
+                "DhcpOptionsId" : { "Fn::GetAtt": [ "BindInstance", "Outputs.PrivateIp" ] }
             }
         },
         "BindDhcpOptions" : {
@@ -1155,7 +1155,7 @@
                         ]
                     ]
                 },
-                "DomainNameServers" : [ { "Fn::GetAtt" : [ "BindInstance", "PrivateIp" ] } ]
+                "DomainNameServers" : [ { "Fn::GetAtt": [ "BindInstance", "Outputs.PrivateIp" ] } ]
             }
         },
         "BindDnsRecord": {
@@ -1167,11 +1167,7 @@
                 "Name": "bind.{{cage_name}}.{{customer_domain}}",
                 "Type": "CNAME",
                 "TTL": "300",
-                "ResourceRecords": [
-                    {
-                       "Fn::GetAtt" : [ "BindInstance", "PrivateIp" ]
-                    }
-                ]
+                "ResourceRecords": [ { "Fn::GetAtt": [ "BindInstance", "Outputs.PrivateIp" ] } ]
             }
         },
         "BindSecurityGroup": {
