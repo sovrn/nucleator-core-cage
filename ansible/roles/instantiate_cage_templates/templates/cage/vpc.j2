@@ -1188,7 +1188,7 @@
                         ]
                     ]
                 },
-                "DomainNameServers" : [ { "Fn::GetAtt": [ "BindInstance", "Outputs.PrivateIp" ] }, {{ awsdns_ip }} ],
+                "DomainNameServers" : [ {{ awsdns_ip }}, { "Fn::GetAtt": [ "BindInstance", "Outputs.PrivateIp" ] } ],
                 "Tags": [
                     {
                         "Key": "Name",
