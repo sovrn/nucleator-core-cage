@@ -45,6 +45,9 @@
     recurse: yes
   when: views_internal.stat.exists == False
 
+#TODO: Reboot bind server if necessary and think about applying the bind dhcp options to the VPC after success as opposed to doing the
+# VPC DHCP Options Association during provisioning and remove the aws dns ip from the BindDhcpOptions resource in instantiate_cage_templates/templates/cage/vpc.j2
+
 # Need to somehow figure out how to get the Route53 info needed in the db_{{ cage_name }}_datalake_lijit_com template...
 - name: "Move db-{{ cage_name }}-datalake-lijit-com into place"
   template: src=db-{{ cage_name }}-datalake-lijit-com dest=/var/named/views/internal/db.{{ cage_name }}.datalake.{{sovrn_domain}}
