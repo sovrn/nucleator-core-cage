@@ -12,16 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ---
-- name: Display the facts for our bind host
-  debug:
-    var: hostvars[inventory_hostname]
-  when: display_facts and hostvars is defined and hostvars[inventory_hostname] is defined
+- name: Install bind packages
+  yum: name={{item}} state=installed
+  sudo: true
+  with_items:
+    - openssl
+    - openssl-devel
+    - bind
+    - bind-devel
 
-# - name: install bind packages
-#   yum: name={{item}} state=installed
-#   sudo: true
-#   with_items:
-#     - nc
+- name: Set bind server config facts
+  set_fact:
+    bind_aws_region: "{{ hostvars.localhost.aws_region }}"
+    bind_vpc_cidr: "{{ hostvars.localhost.first8 }}.{{ hostvars.localhost.second8 }}.0.0/16"
+    bind_awsdns_ip: "{{ hostvars.localhost.first8 }}.{{ hostvars.localhost.second8 }}.0.2"
 
 - name: Move etc-named.conf into place
   template: src=etc-named.conf dest=/etc/named.conf
@@ -29,5 +33,3 @@
 # Need to somehow figure out how to get the Route53 info needed in the db_{{ cage_name }}_datalake_lijit_com template...
 - name: "Move db-{{ cage_name }}-datalake-lijit-com into place"
   template: src=db-{{ cage_name }}-datalake-lijit-com dest=/var/named/views/internal/db.{{ cage_name }}.datalake.{{sovrn_domain}}
-
-

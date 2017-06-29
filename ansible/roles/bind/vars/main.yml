@@ -13,6 +13,5 @@
 # limitations under the License.
 ---
 sovrn_domain: "lijit.com"
-sovrn_dns_domain_forwarders: "10.106.113.11;"
+sovrn_domain_forwarders: "10.106.113.11;"
 
-display_facts: false
