@@ -30,6 +30,21 @@
 - name: Move etc-named.conf into place
   template: src=etc-named.conf dest=/etc/named.conf
 
+- name: Check if our internal views folder is in place
+  stat:
+    path: "/var/named/views/internal"
+  register: views_internal
+
+- name: Create our internal views folder if we need to
+  file:
+    path: "/var/named/views/internal/"
+    state: directory
+    owner: root
+    group: root
+    mode: 0775
+    recurse: yes
+  when: views_internal.stat.exists == False
+
 # Need to somehow figure out how to get the Route53 info needed in the db_{{ cage_name }}_datalake_lijit_com template...
 - name: "Move db-{{ cage_name }}-datalake-lijit-com into place"
   template: src=db-{{ cage_name }}-datalake-lijit-com dest=/var/named/views/internal/db.{{ cage_name }}.datalake.{{sovrn_domain}}
