@@ -27,7 +27,7 @@
   template: src=etc-named.conf dest=/etc/named.conf
 
 # Need to somehow figure out how to get the Route53 info needed in the db_{{ cage_name }}_datalake_lijit_com template...
-- name: Move db-{{ cage_name }}-datalake-lijit-com into place
-  template: src=db-{{ cage_name }}-datalake-lijit-com dest=/var/named/views/internal/db.{{ cage_name }}.datalake.lijit.com
+- name: "Move db-{{ cage_name }}-datalake-lijit-com into place"
+  template: src=db-{{ cage_name }}-datalake-lijit-com dest=/var/named/views/internal/db.{{ cage_name }}.datalake.{{sovrn_domain}}
 
 
