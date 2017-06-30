@@ -28,20 +28,20 @@ public_acl:
 #        PortRange:
 #          From: 21
 #          To: 21
-    - name: InboundHttpPublicNetworkAclEntry
-      properties:
-        Protocol: 6 #tcp
-        RuleAction: allow
-        PortRange:
-          From: 80
-          To: 80
-    - name: InboundHttpsPublicNetworkAclEntry
-      properties:
-        Protocol: 6 #tcp
-        RuleAction: allow
-        PortRange:
-          From: 443
-          To: 443
+    # - name: InboundHttpPublicNetworkAclEntry
+    #   properties:
+    #     Protocol: 6 #tcp
+    #     RuleAction: allow
+    #     PortRange:
+    #       From: 80
+    #       To: 80
+    # - name: InboundHttpsPublicNetworkAclEntry
+    #   properties:
+    #     Protocol: 6 #tcp
+    #     RuleAction: allow
+    #     PortRange:
+    #       From: 443
+    #       To: 443
     - name: InboundSshPublicNetworkAclEntry
       properties:
         Protocol: 6 #tcp

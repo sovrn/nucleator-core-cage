@@ -344,9 +344,9 @@
     {% if not NUCLEATOR_CAGE_REMOVE_INBOUND_PUBLIC_RULES %}
     {% set rule_counter = [NUCLEATOR_CAGE_CIDR_WHITELIST_INITIAL_RULENUM] %}
     {% for entry in (public_acl.inbound_whitelist_entries if not NUCLEATOR_CAGE_OPENVPN_ENABLED else (public_acl.inbound_whitelist_entries|list + public_acl.inbound_whitelist_openvpn_entries|list)) %}
-    {% set cidr_counter=0 %}
+    {% set cidr_counter = [] %}
     {% for whitelist_cidr in NUCLEATOR_CAGE_CIDR_WHITELIST %}
-    "{{entry.name}}{{cidr_counter}}" : {
+    "{{entry.name}}{{ cidr_counter|length }}" : {
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
                 "NetworkAclId": {
@@ -359,7 +359,7 @@
             }
         },
     {% if rule_counter.append(rule_counter[-1]+1) %}{% endif %}
-    {% set cidr_counter = cidr_counter + 1 %}
+    {% if cidr_counter.append('1') %}{% endif %}
     {% endfor %}
     {% endfor %}
     {% for entry in public_acl.inbound_entries %}
